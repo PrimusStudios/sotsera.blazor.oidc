@@ -1,0 +1,60 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <IsPackable>true</IsPackable>
+    <LangVersion>8.0</LangVersion>
+    <RazorLangVersion>3.0</RazorLangVersion>
+    <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
+    <AssemblyName>Sotsera.Blazor.Oidc</AssemblyName>
+    <RootNamespace>Sotsera.Blazor.Oidc</RootNamespace>
+    <Version>1.0.0-alpha-5</Version>
+    <Description>OpenID Connect (OIDC) client for Blazor client-side or hosted projects</Description>
+    <PackageProjectUrl>https://github.com/sotsera/sotsera.blazor.oidc</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/sotsera/sotsera.blazor.oidc.git</RepositoryUrl>
+    <PackageTags>oidc blazor openid openid-connect</PackageTags>
+    <RepositoryType>git</RepositoryType>
+  </PropertyGroup>
+
+  <ItemGroup>
+<<<<<<< HEAD
+    <PackageReference Include="Microsoft.AspNetCore.Components" Version="3.1.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="3.1.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="3.1.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Blazor.HttpClient" Version="3.1.0-preview4.19579.2" />
+=======
+    <PackageReference Include="Microsoft.AspNetCore.Components" Version="$(ComponentsVersion)" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="$(ComponentsVersion)" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="$(ComponentsVersion)" />
+    <PackageReference Include="Microsoft.AspNetCore.Blazor.HttpClient" Version="$(BlazorVersion)" />
+>>>>>>> pr/1
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="*.json" Pack="false" />
+    <None Include="Sotsera.Blazor.Oidc.csproj.DotSettings" Visible="false" />
+    <WebpackInputs Include="**\*.ts" Exclude="node_modules\**" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <!-- Forces the static assets build before the embedded resources list is compiled -->
+    <ResolveStaticWebAssetsInputsDependsOn>RunWebpack;$(ResolveStaticWebAssetsInputsDependsOn)</ResolveStaticWebAssetsInputsDependsOn>
+    <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
+    <TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
+    <DefaultItemExcludes>${DefaultItemExcludes};node_modules\**</DefaultItemExcludes>
+    <!-- VS's FastUpToDateCheck doesn't consider .ts file changes, so it's necessary to disable it to get incremental builds to work correctly (albeit not as fast as if FastUpToDateCheck did work for them) -->
+    <DisableFastUpToDateCheck>true</DisableFastUpToDateCheck>
+  </PropertyGroup>
+
+  <Target Name="EnsureNpmRestored" Condition="!Exists('node_modules')">
+    <Message Importance="high" Text="Restoring dependencies using 'npm'. This may take several minutes..." />
+    <Exec Command="npm install" />
+  </Target>
+
+  <Target Name="RunWebpack" Inputs="@(WebpackInputs)" Outputs="wwwroot\sotsera.blazor.oidc-$(Version).js" DependsOnTargets="EnsureNpmRestored">
+    <!--<Exec Command="npm run build:debug" Condition="'$(Configuration)' == 'Debug'" />
+    <Exec Command="npm run build:production" Condition="'$(Configuration)' != 'Debug'" />-->
+    <Exec Command="npm run build:production" />
+  </Target>
+
+</Project>
